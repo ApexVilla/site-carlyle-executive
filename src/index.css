@@ -7,39 +7,41 @@
 @layer base {
   :root {
     --background: 40 20% 98%;
-    --foreground: 0 0% 12%;
+    --foreground: 0 0% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 12%;
+    --card-foreground: 0 0% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 12%;
+    --popover-foreground: 0 0% 10%;
 
-    --primary: 43 65% 42%;
+    /* Gold principal — levemente mais rico */
+    --primary: 43 62% 40%;
     --primary-foreground: 40 20% 98%;
 
     --secondary: 40 15% 93%;
     --secondary-foreground: 0 0% 25%;
 
     --muted: 40 10% 90%;
-    --muted-foreground: 0 0% 45%;
+    --muted-foreground: 0 0% 42%;
 
-    --accent: 43 65% 42%;
+    --accent: 43 62% 40%;
     --accent-foreground: 40 20% 98%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 40 10% 88%;
+    --border: 40 12% 86%;
     --input: 40 10% 88%;
-    --ring: 43 65% 42%;
+    --ring: 43 62% 40%;
 
     --radius: 0.25rem;
 
-    --gold: 43 65% 42%;
-    --gold-light: 43 54% 55%;
-    --graphite: 0 0% 12%;
-    --graphite-light: 0 0% 30%;
+    --gold: 43 62% 40%;
+    --gold-light: 43 52% 56%;
+    --gold-shine: 43 70% 70%;
+    --graphite: 0 0% 10%;
+    --graphite-light: 0 0% 28%;
 
     --font-display: 'Cormorant Garamond', Georgia, serif;
     --font-body: 'Inter', system-ui, sans-serif;
@@ -51,17 +53,40 @@
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+  }
+
   body {
     @apply bg-background text-foreground antialiased;
     font-family: var(--font-body);
+    overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+
+  /* Custom scrollbar — refinado e discreet */
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--gold) / 0.4);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--gold) / 0.7);
   }
 }
 
 @layer utilities {
+  /* ─── Cores & Gradientes ─── */
   .text-gold {
     color: hsl(var(--gold));
   }
@@ -78,6 +103,7 @@
     background-color: hsl(var(--graphite));
   }
 
+  /* ─── Tipografia ─── */
   .font-display {
     font-family: var(--font-display);
   }
@@ -87,26 +113,117 @@
   }
 
   .gold-gradient-text {
-    background: linear-gradient(135deg, hsl(43, 54%, 55%), hsl(43, 40%, 70%));
+    background: linear-gradient(
+      135deg,
+      hsl(43, 52%, 50%),
+      hsl(43, 40%, 68%),
+      hsl(43, 60%, 42%)
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .gold-line {
-    background: linear-gradient(90deg, hsl(43, 54%, 55%), transparent);
+    background: linear-gradient(90deg, hsl(43, 52%, 50%), transparent);
   }
 
+  /* ─── Layout ─── */
   .section-padding {
     @apply py-24 md:py-32 lg:py-40;
   }
+
+  /* ─── Glassmorphism premium ─── */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  }
+
+  /* ─── Efeito linha dourada lateral ─── */
+  .gold-border-left {
+    border-left: 2px solid hsl(var(--gold) / 0.25);
+    transition: border-color 0.4s ease;
+  }
+  .gold-border-left:hover {
+    border-color: hsl(var(--gold));
+  }
+
+  /* ─── Underline animado ─── */
+  .animated-underline {
+    position: relative;
+  }
+  .animated-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0%;
+    height: 1px;
+    background: hsl(var(--gold));
+    transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .animated-underline:hover::after {
+    width: 100%;
+  }
 }
 
-html {
-  scroll-behavior: smooth;
+/* ─── Keyframes ─── */
+@keyframes shine {
+  0%   { transform: translateX(-200%) skewX(-12deg); }
+  100% { transform: translateX(400%) skewX(-12deg); }
 }
 
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0px);   }
+  50%       { transform: translateY(-8px);  }
+}
+
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(43 62% 40% / 0.35); }
+  50%       { box-shadow: 0 0 0 12px hsl(43 62% 40% / 0); }
+}
+
+@keyframes fade-up-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ─── Animation Classes ─── */
+.animate-shine {
+  animation: shine 0.9s ease-in-out forwards;
+}
+
+.animate-float {
+  animation: float-gentle 4s ease-in-out infinite;
+}
+
+.animate-pulse-gold {
+  animation: pulse-gold 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+/* ─── Selection ─── */
 ::selection {
   background: hsl(43, 54%, 55%);
   color: hsl(0, 0%, 4%);
+}
+
+/* ─── Focus outline ─── */
+:focus-visible {
+  outline: 2px solid hsl(var(--gold));
+  outline-offset: 3px;
+  border-radius: 4px;
 }

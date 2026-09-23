@@ -1,14 +1,11 @@
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
 User-agent: *
 Allow: /
+Crawl-delay: 10
+
+# Bloqueia pastas desnecessárias
+Disallow: /src/
+Disallow: /node_modules/
+Disallow: /.git/
+
+# Sitemap
+Sitemap: https://carlyle-executive.vercel.app/sitemap.xml
